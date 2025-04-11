@@ -128,11 +128,66 @@ show collections
 ## **SECTION B: Data Modeling & Relationships**
 
 21. Design a one-to-many relationship using embedded documents.
+```js
+db.students.insertOne({name:"Dhruv Somagra",age:18,courses:[{name:"Maths",marks:90},{name:"Physics",marks:85}]})
+```
 22. Design a one-to-many relationship using references.
+#### Students Collection
+```js
+db.students.insertOne({ _id: ObjectId("6617c4f3e7a1a1a1a1a1a1a1"),
+  name: "Dhruv"})
+```
+#### Courses Collection
+```js
+db.courses.insertMany({{ userId: ObjectId("6617c4f3e7a1a1a1a1a1a1a1"), name:"Maths", marks: 90 },
+  { userId: ObjectId("6617c4f3e7a1a1a1a1a1a1a1"), name:"Physics", marks: 85}})
+```
 23. Design a many-to-many relationship with references.
+#### students collection
+```js
+db.students.insertOne({ _id: ObjectId("6617c4f3e7a1a1a1a1a1a1a1"),name:"Dhruv Sonagra",courses:[ObjectId("6617c4f3abc2222222222222"), ObjectId("6617c4f3abc3333333333333")]})
+```
+#### Courses Collection
+```js
+db.courses.insertMany([ { _id: ObjectId("6617c4f3abc2222222222222"), name: "Math" },
+  { _id: ObjectId("6617c4f3abc3333333333333"), name: "Physics" }])
+```
 24. Choose between embedding and referencing with explanation.
+- Embedding is that storing related data together in same document as an array
+```js
+db.students.insertOne({name:"Dhruv Sonagra",course:[{name:"Physics",marks:85},{name:"Maths",marks:90}]})
+```
+- Referencing is that storing related data in different document via id references
+```js
+//User Collection
+db.students.insertOne({ _id: ObjectId("6617c4f3e7a1a1a1a1a1a1a1"),name:"Dhruv Sonagra"})
+//Course Collection
+db.courses.insertMany([ { _id: ObjectId("6617c4f3abc2222222222222"), name: "Math" }, { _id: ObjectId("6617c4f3abc3333333333333"), name: "Physics" }])
+```
 25. Use `.populate()` (optional, if using Mongoose) or `$lookup` for joins.
-
+- $lookup is an aggregation stage that allows you to join documents from another collection, similar to a LEFT OUTER JOIN in SQL.
+```js
+{
+  $lookup: {
+    from: "otherCollection",        // the collection to join
+    localField: "fieldInThisDoc",   // field in the current collection
+    foreignField: "fieldInOtherDoc",// field in the other collection
+    as: "joinedResult"              // name of the array field to store joined data
+  }
+}
+```
+```js
+db.students.aggregate([
+  {
+    $lookup: {
+      from: "courses",
+      localField: "courses",
+      foreignField: "_id",
+      as: "courseInfo"
+    }
+  }
+])
+```
 ---
 
 ## **SECTION C: Aggregation Framework**
