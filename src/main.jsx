@@ -9,7 +9,8 @@ import { createRoot } from 'react-dom/client'
 // import Q9 from './Components/Q9/Q9'
 // import Q11 from './Components/Q11/Q11'
 // import Q8 from './Components/Q8/Q8'
-import Q7 from './Components/Q7/Q7'
+// import Q7 from './Components/Q7/Q7'
+import Q12 from './Components/Q12/Q12'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     {/* <Q1/> */}
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')).render(
     {/* <Q9/> */}
     {/* <Q11/> */}
    {/* <Q8/> */}
-    <Q7/>
+    {/* <Q7/> */}
+    <Q12/>
   </StrictMode>,
 )
