@@ -257,25 +257,88 @@ db.students.aggregate([
 ])
 ```
 31. Use `$project` to reshape documents in aggregation.
+```js
+db.students.aggregate([
+  {$project:{
+    _id:0,
+    name:1,
+  }}
+])
+```
 32. Use `$limit` and `$skip` inside an aggregation pipeline.
+```js
+db.students.aggregate([
+  {$limit:5},
+  {$skip:3}
+])
+```
 33. Use `$lookup` to perform a join between `students` and `courses`.
+```js
+db.students.aggregate([
+  {$lookup:{
+     from: "courses",          // target collection
+      localField: "studentId",  // field in students
+      foreignField: "studentId",// field in courses
+      as: "enrolledCourses"
+  }}
+])
+```
 34. Use `$unwind` to flatten an array field during aggregation.
-
+```js
+db.students.aggragate([
+  {$unwind:"$courses"}
+])
+```
 ---
 
 ## **SECTION D: Indexing and Performance**
 
 35. Create a single-field index on `email`.
+```js
+db.students.createIndex({email:1})
+```
 36. Create a compound index on `course` and `age`.
+```js
+db.students.createIndex({courses:1,age:1})
+```
 37. Create a unique index on `rollNo`.
+```js
+db.students.createIndex({rollno:1},{unique:true}) //prevent duplicate
+```
 38. Create a descending index on `createdAt`.
+```js
+db.students.createIndex({createdAt:-1})
+```
 39. Create a partial index on `status = "active"`.
+```js
+db.students.createIndex(
+  {status:1},
+  {partialFilterExpression:{status:"active"}}
+)
+```
 40. Create a TTL (Time To Live) index on `createdAt` that expires after 1 hour.
+```js
+db.students.createIndex(
+  {createdAt:1},
+  {expireAfterSecond:3600}
+)
+```
 41. Use `.explain()` to analyze a query’s performance.
+```js
+db.stundets.createIndex({email:"email@gmail.com"}).explain("executionStats")
+```
 42. View all indexes in a collection.
+```js
+db.students.getIndexes()
+```
 43. Drop a specific index.
+```js
+db.students.dropIndex("email_1")
+```
 44. Drop all indexes in a collection.
-
+```js
+db.students.dropIndexex()
+```
 ---
 
 ## **SECTION E: Advanced Queries and Features**
@@ -292,12 +355,35 @@ db.students.aggregate([
 ## **SECTION F: Backup and Restore (Shell-Based)**
 
 51. Use `mongodump` to back up a single database.
-52. Use `mongodump` to back up all databases.
-53. Back up only one collection from a database.
-54. Restore a database from its backup using `mongorestore`.
-55. Restore all databases from a full backup.
-56. Restore a single collection from backup.
+```js
+mongodump --db myDatabase --out /backup/path/
 
+```
+52. Use `mongodump` to back up all databases.
+```js
+mongodump --out /backup/path/
+
+```
+53. Back up only one collection from a database.
+```js
+mongodump --db myDatabase --collection myCollection --out /backup/path/
+
+```
+54. Restore a database from its backup using `mongorestore`.
+```js
+mongorestore --db myDatabase /backup/path/myDatabase
+
+```
+55. Restore all databases from a full backup.
+```js
+mongorestore /backup/path/
+
+```
+56. Restore a single collection from backup.
+```js
+mongorestore --db myDatabase --collection myCollection /backup/path/myDatabase/myCollection.bson
+
+```
 ---
 
 ## **SECTION G: Administrative and Shell Commands**
