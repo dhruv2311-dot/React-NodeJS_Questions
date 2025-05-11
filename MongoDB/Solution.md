@@ -129,7 +129,7 @@ show collections
 
 21. Design a one-to-many relationship using embedded documents.
 ```js
-db.students.insertOne({name:"Dhruv Somagra",age:18,courses:[{name:"Maths",marks:90},{name:"Physics",marks:85}]})
+db.students.insertOne({name:"Dhruv Sonagra",age:18,courses:[{name:"Maths",marks:90},{name:"Physics",marks:85}]})
 ```
 22. Design a one-to-many relationship using references.
 #### Students Collection
