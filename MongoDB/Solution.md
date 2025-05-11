@@ -193,10 +193,69 @@ db.students.aggregate([
 ## **SECTION C: Aggregation Framework**
 
 26. Use `$group` to count how many students are in each course.
+- $group – Count how many students are in each course
+```js
+db.students.aggregate([
+  {
+    $group: {
+      _id: "$course", // Group by course
+      count: { $sum: 1 } // Count the number of students in each course
+    }
+  }
+])
+```
 27. Use `$avg` to calculate the average marks of students.
+- $avg – Calculate average marks of students
+```js
+db.students.aggregate([
+  {
+    $group: {
+      _id: "$course", // Group by course
+      averageMarks: { $avg: "$marks" } // Calculate average marks of students in each course
+    }
+  }
+])
+```
 28. Use `$sum` to find total marks scored per course.
+- $sum – Total marks scored per course
+```js
+db.students.aggregate([
+  {
+    $group: {
+      _id: "$course", // Group by course
+      totalMarks: { $sum: "$marks" } // Calculate total marks scored per course
+    }
+  }
+])
+```
 29. Use `$match` to filter documents before aggregation.
+- $match – Filter documents before aggregation
+```js
+db.students.aggregate([
+  {
+    $match: {
+      marks: { $gt: 80 } // Filter students with marks greater than 80
+    }
+  },
+  {
+    $group: {
+      _id: "$course", // Group by course
+      count: { $sum: 1 } // Count the number of students in each course
+    }
+  }
+])
+```
 30. Use `$sort` to sort results of an aggregation.
+- $sort – Sort results of an aggregation
+```js
+db.students.aggregate([
+  {
+    $sort: {
+      marks: -1 // Sort students by marks in descending order
+    }
+  }
+])
+```
 31. Use `$project` to reshape documents in aggregation.
 32. Use `$limit` and `$skip` inside an aggregation pipeline.
 33. Use `$lookup` to perform a join between `students` and `courses`.
